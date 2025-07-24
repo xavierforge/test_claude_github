@@ -1,12 +1,10 @@
-name: Claude Merciless Hello
+name: Claude Slash Command Test
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
-  create-claude-hello-issue:
+  create-claude-test-issue:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,22 +14,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Create merciless hello issue
+      - name: Create Claude test issue
         run: |
           current_time=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           
-          # Create simple issue body
-          echo "# 🌍 Merciless Hello Request" > /tmp/issue_body.txt
+          # Create test issue body
+          echo "# 🧪 Claude Slash Command Test" > /tmp/issue_body.txt
           echo "" >> /tmp/issue_body.txt
-          echo "@claude /merciless_hello" >> /tmp/issue_body.txt
+          echo "Testing slash command discovery with custom instructions." >> /tmp/issue_body.txt
+          echo "" >> /tmp/issue_body.txt
+          echo "Available commands:" >> /tmp/issue_body.txt
+          echo "- \`@claude /merciless_hello\` - Executes 7-language greeting" >> /tmp/issue_body.txt
+          echo "- \`@claude /test_command\` - Verifies command discovery system" >> /tmp/issue_body.txt
+          echo "" >> /tmp/issue_body.txt
+          echo "Choose a command to test:" >> /tmp/issue_body.txt
+          echo "@claude /test_command" >> /tmp/issue_body.txt
           echo "" >> /tmp/issue_body.txt
           echo "---" >> /tmp/issue_body.txt
-          echo "*Triggered by commit: ${{ github.sha }}*" >> /tmp/issue_body.txt
-          echo "*Time: $current_time*" >> /tmp/issue_body.txt
+          echo "*Triggered manually at $current_time*" >> /tmp/issue_body.txt
           
           # Create the issue
           gh issue create \
-            --title "🌍 Merciless Hello Request" \
+            --title "🧪 Claude Slash Command Test" \
             --body-file /tmp/issue_body.txt
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
