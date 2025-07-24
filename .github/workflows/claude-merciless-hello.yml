@@ -1,0 +1,35 @@
+name: Claude Merciless Hello
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-claude-hello-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    
+    steps:
+      - name: Create merciless hello issue
+        run: |
+          current_time=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          # Create simple issue body
+          echo "# 🌍 Merciless Hello Request" > /tmp/issue_body.txt
+          echo "" >> /tmp/issue_body.txt
+          echo "@claude /merciless_hello" >> /tmp/issue_body.txt
+          echo "" >> /tmp/issue_body.txt
+          echo "---" >> /tmp/issue_body.txt
+          echo "*Triggered by commit: ${{ github.sha }}*" >> /tmp/issue_body.txt
+          echo "*Time: $current_time*" >> /tmp/issue_body.txt
+          
+          # Create the issue
+          gh issue create \
+            --title "🌍 Merciless Hello Request" \
+            --body-file /tmp/issue_body.txt \
+            --label "merciless-hello,automation"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
