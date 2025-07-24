@@ -32,7 +32,6 @@ jobs:
           # Create the issue
           gh issue create \
             --title "🌍 Merciless Hello Request" \
-            --body-file /tmp/issue_body.txt \
-            --label "merciless-hello,automation"
+            --body-file /tmp/issue_body.txt
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
